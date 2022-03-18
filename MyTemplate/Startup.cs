@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyTemplate.Data;
+using MyTemplate.Mail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +32,7 @@ namespace MyTemplate
                 o.UseSqlServer(Configuration.GetConnectionString("MyTemplateConnectionString"));
             });
 
-            services.AddIdentity<AppUser, IdentityRole>(o => {
-                o.SignIn.RequireConfirmedEmail = false;
-            })
+            services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -57,7 +57,7 @@ namespace MyTemplate
                 options.User.RequireUniqueEmail = true; // Email là duy nhất
 
                 // Cấu hình đăng nhập.
-                options.SignIn.RequireConfirmedEmail = true; // Cấu hình xác thực địa chỉ email (email phải tồn tại)
+                options.SignIn.RequireConfirmedEmail = false; // Cấu hình xác thực địa chỉ email (email phải tồn tại)
                 options.SignIn.RequireConfirmedPhoneNumber = false; // Xác thực số điện thoại
             });
 
@@ -65,8 +65,8 @@ namespace MyTemplate
             services.ConfigureApplicationCookie(options => {
                 // options.Cookie.HttpOnly = true;  
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                options.LoginPath = $"/login/";                                 // Url đến trang đăng nhập
-                options.LogoutPath = $"/logout/";
+                options.LoginPath = $"/Identiy/Account/Login/";                                 // Url đến trang đăng nhập
+                options.LogoutPath = $"/Identiy/Account/logout/";
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";   // Trang khi User bị cấm truy cập
             });
             services.Configure<SecurityStampValidatorOptions>(options =>
@@ -76,6 +76,11 @@ namespace MyTemplate
                 options.ValidationInterval = TimeSpan.FromSeconds(5);
             });
             services.AddOptions();
+
+            var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
+            services.Configure<MailSettings>(mailsettings);               // đăng ký để Inject
+
+            services.AddTransient<IEmailSender, SendMailService>();        // Đăng ký dịch vụ Mail
 
             services.AddRazorPages();
             services.AddControllersWithViews();
@@ -95,6 +100,8 @@ namespace MyTemplate
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();    // đăng nhập
 
             app.UseAuthorization();
 
