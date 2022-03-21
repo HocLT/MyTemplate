@@ -29,6 +29,12 @@
                         <form method="post" class="d-inline">
                             <button class="btn btn-success btn-sm" name="Input.Id" value="@item.Id" asp-page="./Add" asp-page-handler="StartUpdate">Update</button>
                         </form>
+                        <form method="POST" class="d-inline">
+                            <button name="Input.Id" value="@item.Id" class="btn btn-success btn-sm"
+                                    asp-page="./Delete">
+                                Xóa Role
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }
