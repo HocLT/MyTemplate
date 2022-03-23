@@ -7,9 +7,10 @@
 <h1>Role List</h1>
 <partial name="_StatusMessage" model="@Model.StatusMessage"/>
 
-<form method="post">
+<form method="post" class="my-1 d-inline">
     <button class="btn btn-secondary" asp-page="./Add" asp-page-handler="StartNewRole">Create New Role</button>
 </form>
+<a class="btn btn-secondary" asp-page="./User">Assign Roles to User</a>
 
 <table class="table">
     <thead>
