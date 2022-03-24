@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTemplate.Data;
 
 namespace MyTemplate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220324063628_category")]
+    partial class category
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,57 +253,6 @@ namespace MyTemplate.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("MyTemplate.Data.Product", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ProductId");
-
-                    b.ToTable("Product");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductId = 1,
-                            Description = "Product 1",
-                            Name = "Product 1",
-                            Price = 10m
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            Description = "Product 2",
-                            Name = "Product 2",
-                            Price = 15m
-                        },
-                        new
-                        {
-                            ProductId = 3,
-                            Description = "Product 3",
-                            Name = "Product 3",
-                            Price = 50m
-                        },
-                        new
-                        {
-                            ProductId = 4,
-                            Description = "Product 4",
-                            Name = "Product 4",
-                            Price = 45m
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
