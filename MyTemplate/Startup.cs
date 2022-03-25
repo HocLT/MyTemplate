@@ -92,6 +92,14 @@ namespace MyTemplate
 
       services.AddTransient<IEmailSender, SendMailService>();       // Đăng ký dịch vụ Mail
 
+
+      // for session
+      services.AddDistributedMemoryCache();      // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
+      services.AddSession(cfg => {               // Đăng ký dịch vụ Session
+        cfg.Cookie.Name = "fptaptech";           // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+        cfg.IdleTimeout = new TimeSpan(0, 30, 0);// Thời gian tồn tại của Session
+      });
+
       services.AddRazorPages();
       services.AddControllersWithViews();
     }
@@ -108,6 +116,9 @@ namespace MyTemplate
         app.UseExceptionHandler("/Home/Error");
       }
       app.UseStaticFiles();
+
+      // for session
+      app.UseSession();
 
       app.UseRouting();
 

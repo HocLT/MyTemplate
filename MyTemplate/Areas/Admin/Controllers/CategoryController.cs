@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -90,11 +91,11 @@ namespace MyTemplate.Areas.Admin.Controllers
     // GET: Admin/Category/Create
     public async Task<IActionResult> Create()
     {
-      var categories = await _context.Categories.ToListAsync();
-      categories.Insert(0, new Category { 
-        Id = -1,
-        Title = "No Parent"
-      });
+      //var categories = await _context.Categories.ToListAsync();
+      //categories.Insert(0, new Category { 
+      //  Id = -1,
+      //  Title = "No Parent"
+      //});
       ViewData["ParentCategoryId"] = new SelectList(await GetItemsSelectCategories(), "Id", "Title", null);
       //new SelectList(categories, "Id", "Title", -1);
       return View();
@@ -111,16 +112,17 @@ namespace MyTemplate.Areas.Admin.Controllers
       {
         if (category.ParentCategoryId == -1)
           category.ParentCategory = null;
+
         _context.Add(category);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
       }
-      var categories = await _context.Categories.ToListAsync();
-      categories.Insert(0, new Category
-      {
-        Id = -1,
-        Title = "No Parent"
-      });
+      //var categories = await _context.Categories.ToListAsync();
+      //categories.Insert(0, new Category
+      //{
+      //  Id = -1,
+      //  Title = "No Parent"
+      //});
       ViewData["ParentCategoryId"] = new SelectList(await GetItemsSelectCategories(), "Id", "Title", category.ParentCategoryId);
         //new SelectList(categories, "Id", "Title", -1);
       return View(category);

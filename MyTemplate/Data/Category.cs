@@ -28,8 +28,8 @@ namespace MyTemplate.Data
 
     //chuỗi Url
     [Required]
-    [StringLength(100, MinimumLength = 3, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
-    [RegularExpression(@"^[a-z0-9-]*$", ErrorMessage = "Only accept characters [a-z0-9-]")]
+    //[StringLength(100, MinimumLength = 3, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+    //[RegularExpression(@"^[a-z0-9-]*$", ErrorMessage = "Only accept characters [a-z0-9-]")]
     [Display(Name = "Url")]
     public string Slug { set; get; }
 
