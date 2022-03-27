@@ -13,6 +13,7 @@ namespace MyTemplate.Data
     [Key]
     public int ProductId { set; get; }
     public string Name { set; get; }
+    [DataType(DataType.Text)]
     public string Description { set; get; }
     public decimal Price { set; get; }
   }
