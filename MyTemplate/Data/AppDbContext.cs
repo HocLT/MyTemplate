@@ -11,6 +11,8 @@ namespace MyTemplate.Data
   {
     public DbSet<Category> Categories { set; get; }
     public DbSet<Product> Products { set; get; }
+    public DbSet<Orders> Orders { set; get; }
+    public DbSet<OrderDetails> OrderDetails { set; get; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

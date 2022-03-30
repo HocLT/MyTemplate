@@ -110,7 +110,7 @@ namespace MyTemplate.Controllers
       return RedirectToAction(nameof(Cart));
     }
 
-    /// Cập nhật
+    // Cập nhật
     [HttpPost]
     [Route("updatecart", Name = "updatecart")]
     public IActionResult UpdateCart([FromForm] int pid, [FromForm] int quantity)
@@ -141,6 +141,34 @@ namespace MyTemplate.Controllers
     {
       // Xử lý khi đặt hàng
       return View();
+    }
+
+    // xử lý checkout của method POST
+    [HttpPost]
+    [Route("/checkout")]
+    public async Task<IActionResult> CheckOut(string CustomerName)
+    {
+      Orders ord = new Orders();
+      ord.CreatedAt = DateTime.Now;
+      ord.CustomerName = CustomerName;
+
+      var cart = GetCartItems();
+      List<OrderDetails> details = new List<OrderDetails>();
+      foreach (var item in cart)
+      {
+        OrderDetails od = new OrderDetails();
+        od.Order = ord;
+        od.ProductId = item.product.ProductId;
+        od.Price = item.product.Price;
+        od.Quantity = item.quantity;
+      }
+      ord.Details = details;
+      // lưu ord
+      _context.Orders.Add(ord);
+      await _context.SaveChangesAsync();
+      //clear session
+      ClearCart();
+      return Redirect(nameof(Index));
     }
   }
 }
